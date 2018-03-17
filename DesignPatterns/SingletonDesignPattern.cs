@@ -10,19 +10,21 @@ namespace DesignPatterns
     public sealed class SingletonDesignPattern
     {
         int counter = 0;
-        private static SingletonDesignPattern checkNullInstance = null; 
-       //This attribute is required to ensure only one instance is created
+        private static SingletonDesignPattern checkNullInstance = null;
+        //This attribute is required to ensure only one instance is created
 
         public static SingletonDesignPattern generateObjectReferenceProperty
         {
             get
             {
-                return new SingletonDesignPattern(); //We will be using this property to instantiate the class
+                if (checkNullInstance == null)
+                    checkNullInstance = new SingletonDesignPattern(); //We will be using this property to instantiate the class
+                return checkNullInstance;
             }
         }
         private SingletonDesignPattern() //Changing the constructor to singleton ensures objects cannot be created
         {
-            counter--; //The counter value is used to check how many times the object is created
+            counter++; //The counter value is used to check how many times the object is created
             Console.WriteLine("Counter value: " + counter.ToString());
         }
         public void PrintHello(string name, char gender) //The function prints the name of the person with a Mr/Ms based on gender
@@ -42,8 +44,8 @@ namespace DesignPatterns
     {
         public static void Main(string[] args)
         {
-            SingletonDesignPattern obj1 = new SingletonDesignPattern(); //Creating Object 1
-            SingletonDesignPattern obj2 = new SingletonDesignPattern(); //Creating Object 2
+            SingletonDesignPattern obj1 = SingletonDesignPattern.generateObjectReferenceProperty; // We are not creating an object anymore
+            SingletonDesignPattern obj2 = SingletonDesignPattern.generateObjectReferenceProperty; // We are instead referring to the property
             obj1.PrintHello("Prakash", 'M');  //Calling the PrintHello method using obj1 by passing arguments
             obj2.PrintHello("Rob Rokey", 'M'); //Calling the PrintHello method using obj2 by passing arguments
         }
